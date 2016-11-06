@@ -31,6 +31,18 @@ def home():
     return render_template('index.html', page_list=my_page_list)
 
 
+@app.route('/index_nav', methods=['GET', 'POST'])
+def home_nav():
+    #     my_page_list = {
+    #         "pagetitle": "[11.04] ♠유最新日本騎兵웃♣新片合集♥95℃ [11.04]",
+    #         "pagecode": "469049"}
+    my_page_list = read_page_list()
+#     print url_for('static')
+    for (k, v) in my_page_list:
+        print k, repr(v)
+    return render_template('index_nav.html', page_list=my_page_list)
+
+
 @app.route('/signin', methods=['GET'])
 def signin_form():
     return render_template('form.html')
