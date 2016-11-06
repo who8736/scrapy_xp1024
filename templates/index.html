@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>Home simple</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+  <h1 style="font-style:italic">Home</h1>
+  
+  <a href="http://127.0.0.1:5000/static/html/468932.html">test test</a>
+  <br>
+  <a href="{{ url_for('static', filename = 'html/468932.html') }}">test test</a>
+  <br>
+	{% for (k, v) in page_list %}
+    <a href="/static/html/{{ k }}.html">{{ v }}</a><br>
+	{% endfor %}
+</body>
+</html>
