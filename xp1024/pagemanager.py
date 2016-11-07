@@ -32,9 +32,10 @@ def read_page_list():
             print 'traceback.format_exc():\n%s' % traceback.format_exc()
     f.close()
 #     page_list = list(set(page_list))
-    sorted(page_list, key=lambda page: page[0])
+    page_list = sorted(page_list, key=lambda page: page[0], reverse=True)
     write_page_list(page_list)
-    print page_list
+#     for code, title in page_list:
+#         print code, title
     return page_list
 
 
@@ -48,3 +49,6 @@ def write_page_list(page_list):
         jsonstr_list.append(jsonstr)
     f.write(u'\n'.join(jsonstr_list))
     f.close()
+
+if __name__ == '__main__':
+    read_page_list()
