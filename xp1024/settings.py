@@ -38,7 +38,7 @@ ITEM_PIPELINES = {
 }
 # ITEM_PIPELINES = {'tutorial.pipelines.ImagesPipeline': 1}
 IMAGES_STORE = 'static/img'
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 1
 
 # IMAGES_THUMBS = {  # 缩略图的尺寸，设置这个值就会产生缩略图
 #     'small': (50, 50),
