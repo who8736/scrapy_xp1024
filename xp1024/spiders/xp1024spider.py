@@ -130,7 +130,9 @@ class Xp1024spiderSpider(scrapy.Spider):
 #             html = unicode.encode(html[0], 'utf-8')
 #             print '-' * 33
 #             print repr(html[0].decode('unicode_escape'))
+            self.logger.info('save html file: %s' % filename)
             f.write(html)
+            f.close()
 #             f.write(response.body)
 
 #         for img in response.xpath('//div[contains(@id, "read_tpc")]'

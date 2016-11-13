@@ -16,6 +16,7 @@ import json
 
 # import settings
 from items import urlItem, JsonItem
+from dbmanager import write_page
 
 logger = logging.getLogger()
 
@@ -104,6 +105,8 @@ class SaveJsonPipeline(object):
 
             # line = json.dumps(dict(item), ensure_ascii=False) + "\n"
             # line = json.dumps(dict(item), ensure_ascii=False) + "\n"
+            write_page([item['pagecode'], item['pagetitle']])
+
             jsonstr = json.dumps(dict(item), ensure_ascii=False) + '\n'
             print 'pipelines_SaveJsonPipeline_process_item'
             print '=' * 80

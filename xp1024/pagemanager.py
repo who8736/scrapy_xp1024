@@ -12,10 +12,12 @@ import codecs
 def read_page_list():
     f = codecs.open('scraped_data.json', 'rb', encoding='utf-8')
     page_list = []
-    for jsonstr in f.readlines():
-        #         unicodestr = jsonstr
+    while True:
         try:
-            #             unicodestr = jsonstr.decode('utf-8')
+            jsonstr = f.readline()
+            if not jsonstr:
+                break
+            print repr(jsonstr)
             jsonobj = json.loads(jsonstr)
             pagecode = jsonobj['pagecode']
             pagetitle = jsonobj['pagetitle']
@@ -30,11 +32,14 @@ def read_page_list():
             print 'traceback.print_exc():'
             traceback.print_exc()
             print 'traceback.format_exc():\n%s' % traceback.format_exc()
+            #         unicodestr = jsonstr
+            #             unicodestr = jsonstr.decode('utf-8')
     f.close()
 #     page_list = list(set(page_list))
-    sorted(page_list, key=lambda page: page[0])
+    page_list = sorted(page_list, key=lambda page: page[0], reverse=True)
     write_page_list(page_list)
-    print page_list
+#     for code, title in page_list:
+#         print code, title
     return page_list
 
 
@@ -48,3 +53,6 @@ def write_page_list(page_list):
         jsonstr_list.append(jsonstr)
     f.write(u'\n'.join(jsonstr_list))
     f.close()
+
+if __name__ == '__main__':
+    read_page_list()
