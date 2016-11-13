@@ -1,11 +1,6 @@
-
-<html>
-<head>
-  <title>Home simple</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
-</head>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+{% extends "base.html" %}
+{% block contents %}
 	<frameset cols="20%,*">
 		<frame src="index_nav" name="nav" frameborder=1>
 
@@ -19,4 +14,4 @@
 			<p>对不起，您的浏览器不支持“框架”！</p>
 		</body>
 	</noframes>
-</html>
+{% endblock %}
