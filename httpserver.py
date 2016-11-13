@@ -10,6 +10,7 @@ from flask import Flask, request, render_template, url_for
 # import traceback
 
 from xp1024.pagemanager import read_page_list
+from dbmanager import read_page_list
 
 
 app = Flask(__name__)

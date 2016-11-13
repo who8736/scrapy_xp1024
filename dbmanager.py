@@ -18,17 +18,20 @@ def init_table():
     conn.close()
 
 
-def read_pages():
+def read_page_list():
     conn = sqlite3.connect('xp1024.db')
     curs = conn.cursor()
     curs.execute(
         'select pagecode, pagetitle from pages order by pagecode desc;')
-    rows = curs.fetchall()
-    for pagecode, pagetitle in rows:
-        print pagecode, pagetitle
+    page_list = curs.fetchall()
+#     print 'rows type:', type(page_list)
+#     page_list = []
+#     for pagecode, pagetitle in page_list:
+#         print repr(pagecode), repr(pagetitle)
 #     for i in rows:
 #         print i
     conn.close()
+    return page_list
 
 
 def write_pages(pages):
@@ -47,7 +50,7 @@ def write_page(page):
     curs = conn.cursor()
     pagecode, pagetitle = page
     print '-' * 10 + 'write pages' + '-' * 10
-    print pagecode, pagetitle
+    print repr(pagecode), repr(pagetitle)
     curs.execute((u'insert or ignore into pages (pagecode, pagetitle) '
                   u'values(?, ?);'), (pagecode, pagetitle))
     conn.commit()
@@ -60,7 +63,7 @@ def write_pages_test():
     pagecode = u'471882'
     pagetitle = u'[11.08] ★★国产高清の最新合集★☆ [11.09]'
 #     for pagecode, pagetitle in pages:
-    print pagecode, pagetitle
+    print repr(pagecode), repr(pagetitle)
 #     curs.execute(('insert into pages(pagecode, pagetitle) '
 #                   'values(`%s`,`%s`);')
 #                  % (pagecode, pagetitle))
@@ -80,16 +83,17 @@ def del_pages():
 
 if __name__ == '__main__':
     #     init_table()
-    pages = read_page_list()
-    print pages
-    print '-' * 10 + 'write pages' + '-' * 10
-#     write_pages_test()
-    write_pages(pages)
+    #     pages = read_page_list()
+    #     print pages
+    #     print '-' * 10 + 'write pages' + '-' * 10
+    # #     write_pages_test()
+    #     write_pages(pages)
 
     #     del_pages()
 
     print '-' * 10 + 'read pages' + '-' * 10
-    read_pages()
+    pages_list = read_page_list()
+    print pages_list
 
 
 #     curs = conn.cursor()
