@@ -2,6 +2,7 @@
 import scrapy
 import os
 import codecs
+import traceback
 # import json
 # import unicode
 from xp1024.items import urlItem, JsonItem
@@ -14,12 +15,16 @@ from scrapy.utils.url import urljoin_rfc
 # from scrapy import log
 from bs4 import BeautifulSoup
 
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED
 
 
 def convert_html(html, subpath):
     """将html中img标签的src属性改为本地链接"""
-    soup = BeautifulSoup(html, 'lxml')
+#     soup = BeautifulSoup(html, 'lxml')
+    # save_item_page函数中使用BeautifulSoup解析网页时，传入本函数的参数类型是Tag,可直接赋值给soup进行处理
+    soup = html
 #     print '=' * 80
     for img in soup.findAll('img'):
         src = img['src']
@@ -72,26 +77,20 @@ class Xp1024spiderSpider(scrapy.Spider):
 
         for sel in response.xpath('//h3/a[contains(@href, "htm_data")]'):
 
-            jsonItem = JsonItem()
             item = urlItem()
             item['link'] = sel.xpath('@href').extract()
-            #             print sel
-            #             item = urlItem()
-
-            jsonItem['pagetitle'] = sel.xpath('text()').extract()[0]
-            jsonItem['pagecode'] = page_code(item['link'][0])
-            yield jsonItem
-#             print jsonItem['name'], jsonItem['htmlfile']
-
             baseurl = u'http://c2.1024mx.org/pw/'
-#             url = [urljoin_rfc(baseurl, u) for u in item['link']]
             url = urljoin_rfc(baseurl, item['link'][0])
 #             print url
 
 #             测试用，仅对一个文件进行分析
-#             print url.find('468932')
-            if TESTFLAG and url.find('470074') < 0:
+            if TESTFLAG and url.find(TESTPAGECODE) < 0:
                 continue
+
+            jsonItem = JsonItem()
+            jsonItem['pagetitle'] = sel.xpath('text()').extract()[0]
+            jsonItem['pagecode'] = page_code(item['link'][0])
+            yield jsonItem
 
             # 已保存的文件不再处理
             filename = './html/' + url.split('/')[-1]
@@ -107,73 +106,126 @@ class Xp1024spiderSpider(scrapy.Spider):
 #         with open(filename, 'wb') as f:
 #             f.write(response.body)
 
-    def parse_item(self, response):
-        #         print response.url
-        #         print '=================================='
-        #         filename = 'xp1024test.html'
-
+    def save_item_page(self, response):
         # 网页主要部分保存到文件
         filename = 'static/html/' + response.url.split('/')[-1]
+        self.logger.debug('response charset: %s' % response.encoding)
+
+#         exp = u'//div[contains(@id, "read_tpc")]'
+#         exp = u'//div[contains(@id, "read_tpc")]'
+#         exp = u'//th[contains(@id, "td_tpc")]'
+# #         html = response.xpath(exp).extract()
+#         # 改用Selector的方法进行解析
+#         sel = Selector(response)
+#         html = sel.xpath(exp).extract()
+#         html = sel.xpath(u'//div[re:test(@id, "read_tpc")]').extract()
+
+        # 因网页含有空字符（nul）导致原解析方法失败，改用BeautifulSoup解析
+        soup = BeautifulSoup(response.body, 'lxml')
+        html = soup.find_all(id='td_tpc')
+        print '=' * 80
+        print html
+        print '=' * 80
+
+        if TESTFLAG:
+            testfilename = ('static/html/' + 'test' +
+                            response.url.split('/')[-1])
+            try:
+                testfile = codecs.open(testfilename, 'wb', encoding='utf-8')
+                #                     response.body = response.body.decode('utf-8')
+                print '-' * 80
+                print repr(response.body)
+                testfile.write(response.body.decode('utf-8'))
+            except Exception, e:
+                print 'str(Exception):\t', str(Exception)
+                print 'str(e):\t\t', str(e)
+                print 'repr(e):\t', repr(e)
+                print 'e.message:\t', e.message
+                print 'traceback.print_exc():'
+                traceback.print_exc()
+                print 'traceback.format_exc():\n%s' % traceback.format_exc()
+            print '-' * 80
+            testfile.close()
+
         subpath = response.url.split('/')[-1].split('.')[0]
+        html = convert_html(html[0], subpath)
+        html = """
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+        <meta http-equiv="Content-Type" content="text/html;
+        charset=utf-8">
+        </head>""" + html + '</html>'
+
+        #             html = unicode.encode(html[0], 'utf-8')
+        #             print '-' * 33
+        #             print repr(html[0].decode('unicode_escape'))
+        self.logger.info('save html file: %s' % filename)
         with codecs.open(filename, 'wb', encoding='utf-8') as f:
-            exp = '//div[contains(@id, "read_tpc")]'
-            html = response.xpath(exp).extract()
-            html = convert_html(html[0], subpath)
-            html = """
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-            <meta http-equiv="Content-Type" content="text/html;
-            charset=utf-8">
-            </head>""" + html + '</html>'
-
-
-#             html = unicode.encode(html[0], 'utf-8')
-#             print '-' * 33
-#             print repr(html[0].decode('unicode_escape'))
-            self.logger.info('save html file: %s' % filename)
             f.write(html)
             f.close()
-#             f.write(response.body)
 
-#         for img in response.xpath('//div[contains(@id, "read_tpc")]'
-#                                   '//img//@src').extract():
-            #             print '-' * 20
-            #             url = sel.xpath('@src').extract()
-            #             print imgurl
-#
-#             print img
-#             item = urlItem()
-# #             item['image_urls'] = img.xpath('/img/@src').extract()
-#             item['image_urls'] = [img]
-# #             print item['image_urls']
-#             yield item
-#             item.test()
-#             print '-' * 20
-
-#             item = picItem()
-#             item['name'] = sel.xpath('src').extract()
-#             item['link'] = sel.xpath('a/@href').extract()
-
-# ==========================================
+    def parse_item(self, response):
+        self.save_item_page(response)
         item = urlItem()
-        exp = '//div[contains(@id, "read_tpc")]//img/@src'
-#         hxs = Selector(text=response.body)
-# #         detail_url_list = hxs.xpath('//li[@class="good-list"]/@href').extract()
-#         urls = hxs.xpath(exp).extract()
-        urls = response.xpath(exp).extract()
+#         exp = '//div[contains(@id, "read_tpc")]//img/@src'
+#         exp = u'//th[contains(@id, "td_tpc")]/div//img/@src'
+        #         hxs = Selector(text=response.body)
+        # #         detail_url_list = hxs.xpath('//li[@class="good-list"]/@href').extract()
+        #         urls = hxs.xpath(exp).extract()
+#         urls = response.xpath(exp).extract()
+        # 因网页含有空字符（nul）导致原解析方法失败，改用BeautifulSoup解析
+        soup = BeautifulSoup(response.body, 'lxml')
+        maincontent = soup.find_all(id='td_tpc')[0]
+        urls = []
+        imgs = maincontent.find_all('img')
+        for img in imgs:
+            urls.append(img['src'])
+        print urls
         undown_url = []
+        subpath = response.url.split('/')[-1].split('.')[0]
         for url in urls:
             image_name = 'img/full/%s/%s' % (subpath, url.split('/')[-1])
             if not os.path.isfile(image_name):
                 undown_url.append(url)
         if undown_url:
             item['image_urls'] = (undown_url, subpath)
-#             print item['image_urls']
-#             print '1' * 80
-#             print type(item)
-#             print item
-#
+            #             print item['image_urls']
+            #             print '1' * 80
+            #             print type(item)
+            #             print item
+            #
             yield item  # 注释这行，暂不下载图片
 
     def close(self):
         self.logger.info('Xp1024spiderSpider close')
+
+
+def runscrapy():
+    # 方法一
+    process = CrawlerProcess(get_project_settings())
+
+    # 'followall' is the name of one of the spiders of the project.
+    process.crawl('xp1024')
+    # the script will block here until the crawling is finished
+    process.start()
+
+# 方法二
+#     runner = CrawlerRunner()
+#
+#     d = runner.crawl(Xp1024spiderSpider)
+#     d.addBoth(lambda _: reactor.stop())
+# reactor.run()  # the script will block here until the crawling is
+# finished
+
+
+if __name__ == '__main__':
+    try:
+        runscrapy()
+    except Exception, e:
+        print 'str(Exception):\t', str(Exception)
+        print 'str(e):\t\t', str(e)
+        print 'repr(e):\t', repr(e)
+        print 'e.message:\t', e.message
+        print 'traceback.print_exc():'
+        traceback.print_exc()
+        print 'traceback.format_exc():\n%s' % traceback.format_exc()

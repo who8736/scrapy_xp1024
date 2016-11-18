@@ -17,7 +17,7 @@
 # TESTFLAG = True
 TESTFLAG = False
 # 测试时抓取的网页代码，如'470074'， 则抓取'html/470074.html'
-TESTPAGECODE = '470074'
+TESTPAGECODE = '475407'
 
 # 是否处理已下载过的页面
 CRAWLDOWNLOADED = True

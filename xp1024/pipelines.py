@@ -73,6 +73,7 @@ class Xp1024Pipeline(ImagesPipeline):  # 继承ImagesPipeline这个类，实现�
 class SaveJsonPipeline(object):
 
     def __init__(self):
+        pass
         #         self.file = codecs.open(
         #             'scraped_data.json', 'rb', encoding='utf-8')
         #         #         target = json.JSONDecoder().decode(self.file)
@@ -89,11 +90,11 @@ class SaveJsonPipeline(object):
         # #         print 'jsonobject' * 10
         # # #         print json.dump(jsonobject)
         # #         print jsonobject
-        self.lines = []
+#         self.lines = []
 
-        self.file = codecs.open(
-            'scraped_data.json', 'a', encoding='utf-8')
-        self.page_dict = {}
+#         self.file = codecs.open(
+#             'scraped_data.json', 'a', encoding='utf-8')
+#         self.page_dict = {}
 
     def process_item(self, item, spider):
         if isinstance(item, JsonItem):
@@ -107,13 +108,13 @@ class SaveJsonPipeline(object):
             # line = json.dumps(dict(item), ensure_ascii=False) + "\n"
             write_page([item['pagecode'], item['pagetitle']])
 
-            jsonstr = json.dumps(dict(item), ensure_ascii=False) + '\n'
-            print 'pipelines_SaveJsonPipeline_process_item'
-            print '=' * 80
-            print jsonstr.encode('gb18030')
-            self.file.write(jsonstr)
+#             jsonstr = json.dumps(dict(item), ensure_ascii=False) + '\n'
+#             print 'pipelines_SaveJsonPipeline_process_item'
+#             print '=' * 80
+#             print jsonstr.encode('gb18030')
+#             self.file.write(jsonstr)
         return item
 
     def spider_closed(self, spider):
         logger.info('spider closed')
-        self.file.close()
+#         self.file.close()
