@@ -59,7 +59,7 @@ def signin():
                            username=username)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', threaded=True)
 
 # from flask import Flask
 # from flask import request, render_template
