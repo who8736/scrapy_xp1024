@@ -123,9 +123,9 @@ class Xp1024spiderSpider(scrapy.Spider):
         # 因网页含有空字符（nul）导致原解析方法失败，改用BeautifulSoup解析
         soup = BeautifulSoup(response.body, 'lxml')
         html = soup.find_all(id='td_tpc')
-        print '=' * 80
-        print html
-        print '=' * 80
+#         print '=' * 80
+#         print html
+#         print '=' * 80
 
         if TESTFLAG:
             testfilename = ('static/html/' + 'test' +
@@ -133,8 +133,8 @@ class Xp1024spiderSpider(scrapy.Spider):
             try:
                 testfile = codecs.open(testfilename, 'wb', encoding='utf-8')
                 #                     response.body = response.body.decode('utf-8')
-                print '-' * 80
-                print repr(response.body)
+#                 print '-' * 80
+#                 print repr(response.body)
                 testfile.write(response.body.decode('utf-8'))
             except Exception, e:
                 print 'str(Exception):\t', str(Exception)
@@ -144,7 +144,7 @@ class Xp1024spiderSpider(scrapy.Spider):
                 print 'traceback.print_exc():'
                 traceback.print_exc()
                 print 'traceback.format_exc():\n%s' % traceback.format_exc()
-            print '-' * 80
+#             print '-' * 80
             testfile.close()
 
         subpath = response.url.split('/')[-1].split('.')[0]
