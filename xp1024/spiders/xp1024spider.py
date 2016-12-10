@@ -86,18 +86,22 @@ class Xp1024spiderSpider(scrapy.Spider):
 #             测试用，仅对一个文件进行分析
             if TESTFLAG and url.find(TESTPAGECODE) < 0:
                 continue
-
+            print sel
+            print sel.xpath('text()').extract()
             jsonItem = JsonItem()
-            jsonItem['pagetitle'] = sel.xpath('text()').extract()[0]
-            jsonItem['pagecode'] = page_code(item['link'][0])
-            yield jsonItem
+            try:
+                jsonItem['pagetitle'] = sel.xpath('text()').extract()[0]
+                jsonItem['pagecode'] = page_code(item['link'][0])
+                yield jsonItem
+            except IndexError:
+                self.logger.warning('fail parse:%s', repr(sel))
+            else:
+                # 已保存的文件不再处理
+                filename = './html/' + url.split('/')[-1]
+                if CRAWLDOWNLOADED and os.path.isfile(filename):
+                    continue
 
-            # 已保存的文件不再处理
-            filename = './html/' + url.split('/')[-1]
-            if CRAWLDOWNLOADED and os.path.isfile(filename):
-                continue
-
-            yield scrapy.Request(url, callback=self.parse_item)
+                yield scrapy.Request(url, callback=self.parse_item)
 #             yield item
 #         return item
 
