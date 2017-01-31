@@ -73,10 +73,10 @@ def write_pages_test():
     conn.close()
 
 
-def del_pages():
+def del_pages(page_code):
     conn = sqlite3.connect('xp1024.db')
     curs = conn.cursor()
-    curs.execute(u'delete from pages where pagecode="471882";')
+    curs.execute(u'delete from pages where pagecode="%s";' % page_code)
     conn.commit()
     conn.close()
 
