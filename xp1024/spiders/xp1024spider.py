@@ -81,7 +81,7 @@ class Xp1024spiderSpider(scrapy.Spider):
 
             item = urlItem()
             item['link'] = sel.xpath('@href').extract()
-            baseurl = u'http://c2.1024mx.org/pw/'
+            baseurl = u'http://x2.pix378.net/pw/'
             url = urljoin_rfc(baseurl, item['link'][0])
 #             print url
 
