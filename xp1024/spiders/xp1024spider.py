@@ -47,9 +47,11 @@ def page_code(page_url):
 
 class Xp1024spiderSpider(scrapy.Spider):
     # class Xp1024Spider(CrawlSpider):
-    name = "xp1024"
-    allowed_domains = ["c2.1024mx.org"]
-    start_urls = ['http://c2.1024mx.org/pw/thread.php?fid=3/']
+    name = 'xp1024'
+#     allowed_domains = ['c2.1024mx.org']
+#     start_urls = ['http://c2.1024mx.org/pw/thread.php?fid=3/']
+    allowed_domains = ['x2.pix378.net']
+    start_urls = ['http://x2.pix378.net/pw/thread.php?fid=3']
 
     rules = (
         # 提取匹配 'category.php' (但不匹配 'subsection.php') 的链接并跟进链接
