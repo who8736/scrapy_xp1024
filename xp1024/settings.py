@@ -20,7 +20,7 @@ TESTFLAG = False
 TESTPAGECODE = '475407'
 
 # 起始页
-HOMEPAGE = 'http://r2.1024cls.club/pw/thread.php?fid=3'
+HOMEPAGE = 'http://s2.lulujjs.net/pw/thread.php?fid=3'
 
 # 是否处理已下载过的页面
 CRAWLDOWNLOADED = True
