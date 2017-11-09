@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED
+from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED, HOMEPAGE
 
 
 def convert_html(html, subpath):
@@ -51,7 +51,8 @@ class Xp1024spiderSpider(scrapy.Spider):
 #     allowed_domains = ['c2.1024mx.org']
 #     start_urls = ['http://c2.1024mx.org/pw/thread.php?fid=3/']
     allowed_domains = ['x2.pix378.net']
-    start_urls = ['http://x2.pix378.net/pw/thread.php?fid=3']
+#     start_urls = ['http://x2.pix378.net/pw/thread.php?fid=3']
+    start_urls = [HOMEPAGE]
 
     rules = (
         # 提取匹配 'category.php' (但不匹配 'subsection.php') 的链接并跟进链接

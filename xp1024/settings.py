@@ -19,6 +19,9 @@ TESTFLAG = False
 # 测试时抓取的网页代码，如'470074'， 则抓取'html/470074.html'
 TESTPAGECODE = '475407'
 
+# 起始页
+HOMEPAGE = 'http://r2.1024cls.club/pw/thread.php?fid=3'
+
 # 是否处理已下载过的页面
 CRAWLDOWNLOADED = True
 # CRAWLDOWNLOADED = False
