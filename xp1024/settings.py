@@ -50,7 +50,7 @@ DOWNLOAD_DELAY = 1
 
 DOWNLOADER_MIDDLEWARES = {
     #     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
-    'xp1024.middlewares.ProxyMiddleware': 100,
+    'xp1024.middlewares.ProxyMiddleware': None,
     'xp1024.middlewares.CustomRetryMiddleware': 120,
     'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware': None,
     'scrapy.contrib.downloadermiddleware.redirect.MetaRefreshMiddleware': None,
