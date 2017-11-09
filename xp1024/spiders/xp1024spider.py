@@ -17,7 +17,8 @@ from bs4 import BeautifulSoup
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED, HOMEPAGE
+from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED
+from xp1024.settings import HOMEPAGE, BASEURL
 
 
 def convert_html(html, subpath):
@@ -82,7 +83,8 @@ class Xp1024spiderSpider(scrapy.Spider):
 
             item = urlItem()
             item['link'] = sel.xpath('@href').extract()
-            baseurl = u'http://x2.pix378.net/pw/'
+#             baseurl = u'http://x2.pix378.net/pw/'
+            baseurl = BASEURL
             url = urljoin_rfc(baseurl, item['link'][0])
 #             print url
 

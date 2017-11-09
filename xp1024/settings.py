@@ -21,6 +21,7 @@ TESTPAGECODE = '475407'
 
 # 起始页
 HOMEPAGE = 'http://s2.lulujjs.net/pw/thread.php?fid=3'
+BASEURL = u'http://s2.lulujjs.net/pw/'
 
 # 是否处理已下载过的页面
 CRAWLDOWNLOADED = True
