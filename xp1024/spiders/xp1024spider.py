@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from xp1024.settings import TESTFLAG, TESTPAGECODE, CRAWLDOWNLOADED
-from xp1024.settings import HOMEPAGE, BASEURL
+from xp1024.settings import HOMEPAGE, BASEURL, ALLOWED_DOMAINS
 
 
 def convert_html(html, subpath):
@@ -51,7 +51,7 @@ class Xp1024spiderSpider(scrapy.Spider):
     name = 'xp1024'
 #     allowed_domains = ['c2.1024mx.org']
 #     start_urls = ['http://c2.1024mx.org/pw/thread.php?fid=3/']
-    allowed_domains = ['x2.pix378.net']
+    allowed_domains = ALLOWED_DOMAINS
 #     start_urls = ['http://x2.pix378.net/pw/thread.php?fid=3']
     start_urls = [HOMEPAGE]
 
