@@ -20,9 +20,9 @@ TESTFLAG = False
 TESTPAGECODE = '475407'
 
 # 起始页
-HOMEPAGE = 'http://s2.lulujjs.net/pw/thread.php?fid=3'
-BASEURL = u'http://s2.lulujjs.net/pw/'
-ALLOWED_DOMAINS = ['s2.lulujjs.net']
+HOMEPAGE = 'http://s2.lulujjs.info/pw/thread.php?fid=3'
+BASEURL = u'http://s2.lulujjs.info/pw/'
+ALLOWED_DOMAINS = ['s2.lulujjs.info']
 
 # 是否处理已下载过的页面
 CRAWLDOWNLOADED = True
